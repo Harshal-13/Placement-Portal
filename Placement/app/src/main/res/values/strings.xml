@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Placement  !!!</string>
+    <string name="enter_your_name">Enter Your Name:</string>
+    <string name="enter">Enter</string>
+    <string name="the_calling_activity_was">The Calling activity was</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log in</string>
+    <string name="get_the_name">Get The Name</string>
+    <string name="the_user_name_was">The user name was</string>
+</resources>
