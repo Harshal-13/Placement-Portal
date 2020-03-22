@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,12 +26,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
+
+import models.company;
+import models.student;
 
 public class Login extends Activity {
-    EditText userId, password;
-    FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    FirebaseAuth mFirebaseAuth;
+    EditText userId, password;
     Button loginButton;
+    AppCompatRadioButton stud, comp;
     TextView dontHaveAnAccount;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 1;
@@ -55,6 +69,8 @@ public class Login extends Activity {
 
         userId = findViewById(R.id.username_edit_text);
         password = findViewById(R.id.password_edit_text);
+        stud = findViewById(R.id.student_selector_2);
+        comp = findViewById(R.id.company_selector_2);
         dontHaveAnAccount = findViewById(R.id.dont_have_an_account);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -75,7 +91,7 @@ public class Login extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = userId.getText().toString();
+                final String username = userId.getText().toString();
                 String pwd = password.getText().toString();
                 if(username.isEmpty() && pwd.isEmpty()){
                     Toast.makeText(Login.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
@@ -88,6 +104,10 @@ public class Login extends Activity {
                     password.setError("Please enter a Password");
                     password.requestFocus();
                 }
+                else if(pwd.length()<6){
+                    password.setError("Password should be at least 6 characters long");
+                    password.requestFocus();
+                }
                 else{
                     mFirebaseAuth.signInWithEmailAndPassword(username,pwd).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -96,8 +116,30 @@ public class Login extends Activity {
                                 Toast.makeText(Login.this,"Login Error, Please try Again",Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                startActivity(new Intent(Login.this, home.class));
-                                finish();
+                                if(stud.isChecked()){
+                                    if(checkUsernamePresence(username, false)){
+                                        Toast.makeText(Login.this, "Logged in as Student !", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Login.this, home.class));
+                                        finish();
+                                    }
+                                    else{
+                                        Toast.makeText(Login.this, "Username Not in Students !", Toast.LENGTH_SHORT).show();
+                                        FirebaseAuth.getInstance().signOut();
+                                    }
+                                } else if(comp.isChecked()){
+                                    if(checkUsernamePresence(username, true)){
+                                        Toast.makeText(Login.this, "Logged in as Student !", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Login.this, home.class));
+                                        finish();
+                                    }
+                                    else{
+                                        Toast.makeText(Login.this, "Username Not in Students !", Toast.LENGTH_SHORT).show();
+                                        FirebaseAuth.getInstance().signOut();
+                                    }
+                                }else{
+                                    Toast.makeText(Login.this, "Please Check in your Type !", Toast.LENGTH_SHORT).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                }
                             }
                         }
                     });
@@ -109,6 +151,24 @@ public class Login extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(Login.this, Signin.class));
                 finish();
+            }
+        });
+
+        stud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(stud.isChecked()){
+                    comp.setChecked(false);
+                }
+            }
+        });
+
+        comp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(comp.isChecked()){
+                    stud.setChecked(false);
+                }
             }
         });
 
@@ -125,6 +185,43 @@ public class Login extends Activity {
                 }
             }
         });
+    }
+
+    private boolean checkUsernamePresence(String username, boolean a){
+        final boolean[] ans = {false};
+        if(!a){
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
+            ref.child("email").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        ans[0] = true;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else{
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
+            ref.child("email").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        ans[0] = true;
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        return ans[0];
     }
 
     private void googleLogIn(){

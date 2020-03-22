@@ -21,8 +21,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DecimalFormat;
 import java.util.Objects;
+
+import models.company;
+import models.student;
 
 public class Signin extends Activity {
     EditText studentName, studentEmail ,studentPassword, studentBranch, studentCPI, companyName, companyEmail, companyPassword, companyBranches, companyCutoffCPI;
