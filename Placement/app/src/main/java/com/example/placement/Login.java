@@ -3,7 +3,6 @@ package com.example.placement;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -15,28 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
-
-import models.company;
-import models.student;
 
 public class Login extends Activity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -44,7 +38,8 @@ public class Login extends Activity {
     EditText userId, password;
     Button loginButton;
     AppCompatRadioButton stud, comp;
-    TextView dontHaveAnAccount;
+    TextView dontHaveAnAccount, mOption;
+    SignInButton googleLogin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 1;
 
@@ -72,6 +67,7 @@ public class Login extends Activity {
         stud = findViewById(R.id.student_selector_2);
         comp = findViewById(R.id.company_selector_2);
         dontHaveAnAccount = findViewById(R.id.dont_have_an_account);
+        mOption = findViewById(R.id.textView4);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -118,7 +114,7 @@ public class Login extends Activity {
                             else{
                                 if(stud.isChecked()){
                                     if(checkUsernamePresence(username, false)){
-                                        Toast.makeText(Login.this, "Logged in as Student !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(Login.this, home.class));
                                         finish();
                                     }
@@ -128,12 +124,12 @@ public class Login extends Activity {
                                     }
                                 } else if(comp.isChecked()){
                                     if(checkUsernamePresence(username, true)){
-                                        Toast.makeText(Login.this, "Logged in as Student !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(Login.this, home.class));
                                         finish();
                                     }
                                     else{
-                                        Toast.makeText(Login.this, "Username Not in Students !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, "Username Not in Companies !", Toast.LENGTH_SHORT).show();
                                         FirebaseAuth.getInstance().signOut();
                                     }
                                 }else{
@@ -159,6 +155,8 @@ public class Login extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(stud.isChecked()){
                     comp.setChecked(false);
+                    mOption.setVisibility(View.VISIBLE);
+                    googleLogin.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -168,20 +166,20 @@ public class Login extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(comp.isChecked()){
                     stud.setChecked(false);
+                    mOption.setVisibility(View.GONE);
+                    googleLogin.setVisibility(View.GONE);
                 }
             }
         });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        SignInButton googleLogin = findViewById(R.id.google_login_button);
+        googleLogin = findViewById(R.id.google_login_button);
         googleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.google_login_button:
-                        googleLogIn();
-                        break;
+                if (view.getId() == R.id.google_login_button) {
+                    googleLogIn();
                 }
             }
         });
@@ -232,14 +230,13 @@ public class Login extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            startActivity(new Intent(Login.this,  home.class));
-            finish();
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()){
+                Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Login.this, home.class));
+                finish();
+            }
         }
     }
 
@@ -247,8 +244,6 @@ public class Login extends Activity {
         if (account != null) {
             FirebaseAuth.getInstance().signOut();
             mGoogleSignInClient.signOut();
-        } else {
-
         }
     }
 }

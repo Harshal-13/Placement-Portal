@@ -9,9 +9,6 @@ public class student {
         this.branch = branch;
         this.cpi = cpi;
     }
-    public student(){
-
-    }
 
     public String student_getName() {
         return name;

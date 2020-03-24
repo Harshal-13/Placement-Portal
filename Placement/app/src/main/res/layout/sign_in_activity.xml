@@ -171,7 +171,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_selector">
@@ -235,46 +235,6 @@
             android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/companyPasswordTextView" />
-
-        <TextView
-            android:id="@+id/branchesAllowed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="8dp"
-            android:text="Branches Allowed"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/company_password_edit_text" />
-
-        <EditText
-            android:id="@+id/branch_allowed_edit_text"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:inputType="textAutoComplete"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/branchesAllowed" />
-
-        <TextView
-            android:id="@+id/cpiCutoffTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="8dp"
-            android:text="Cutoff CPI"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/branch_allowed_edit_text" />
-
-        <EditText
-            android:id="@+id/cpi_cutoff_edit_text"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:inputType="numberDecimal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cpiCutoffTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

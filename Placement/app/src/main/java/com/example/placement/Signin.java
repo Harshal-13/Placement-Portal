@@ -27,7 +27,7 @@ import models.company;
 import models.student;
 
 public class Signin extends Activity {
-    EditText studentName, studentEmail ,studentPassword, studentBranch, studentCPI, companyName, companyEmail, companyPassword, companyBranches, companyCutoffCPI;
+    EditText studentName, studentEmail ,studentPassword, studentBranch, studentCPI, companyName, companyEmail, companyPassword;
     FirebaseAuth mFirebaseAuth;
     Button signupButton;
     AppCompatRadioButton stud, comp;
@@ -52,8 +52,6 @@ public class Signin extends Activity {
         companyName = findViewById(R.id.company_name_edit_text);
         companyEmail = findViewById(R.id.company_email_edit_text);
         companyPassword = findViewById(R.id.company_password_edit_text);
-        companyBranches = findViewById(R.id.branch_allowed_edit_text);
-        companyCutoffCPI = findViewById(R.id.cpi_cutoff_edit_text);
 
         signupButton = findViewById(R.id.signup_button);
         alreadyRegistered = findViewById(R.id.already_registered);
@@ -117,15 +115,10 @@ public class Signin extends Activity {
                     final String name = companyName.getText().toString();
                     final String username = companyEmail.getText().toString();
                     String pwd = companyPassword.getText().toString();
-                    final String branch = companyPassword.getText().toString();
-                    final String cpi = companyCutoffCPI.getText().toString();
 
-                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty() || branch.isEmpty() || cpi.isEmpty()){
+                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty()){
                         Toast.makeText(Signin.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
                     }
-//                    else if(Integer.valueOf(cpi)>10){
-//                        Toast.makeText(Signin.this, "CPI can't be more than 10 !",Toast.LENGTH_SHORT).show();
-//                    }
                     else if(pwd.length()<6){
                         Toast.makeText(Signin.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();
                     }
@@ -137,7 +130,7 @@ public class Signin extends Activity {
                                     Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
-                                    company company = new company(name, username, branch, cpi);
+                                    company company = new company(name, username);
                                     FirebaseDatabase.getInstance().getReference("Companies")
                                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                                             .setValue(company).addOnCompleteListener(new OnCompleteListener<Void>() {
