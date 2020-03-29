@@ -98,7 +98,7 @@ public class Signin extends Activity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
                                                 Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Signin.this,home.class));
+                                                startActivity(new Intent(Signin.this,studentLandingPage.class));
                                                 finish();
                                             }
                                             else{
@@ -138,7 +138,7 @@ public class Signin extends Activity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
                                                 Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Signin.this,home.class));
+                                                startActivity(new Intent(Signin.this,companyLandingPage.class));
                                                 finish();
                                             }
                                             else{

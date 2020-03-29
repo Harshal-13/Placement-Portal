@@ -3,6 +3,7 @@ package com.example.placement;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -31,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class Login extends Activity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -73,12 +76,7 @@ public class Login extends Activity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if(mFirebaseUser != null){
-                    Toast.makeText(Login.this, "You are Logged in !", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Login.this, home.class));
-                    finish();
-                }
-                else{
+                if(mFirebaseUser == null){
                     Toast.makeText(Login.this, "Please fill Correct Details", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -87,7 +85,7 @@ public class Login extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username = userId.getText().toString();
+                final String username = userId.getText().toString().trim();
                 String pwd = password.getText().toString();
                 if(username.isEmpty() && pwd.isEmpty()){
                     Toast.makeText(Login.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
@@ -113,25 +111,42 @@ public class Login extends Activity {
                             }
                             else{
                                 if(stud.isChecked()){
-                                    if(checkUsernamePresence(username, false)){
-                                        Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(Login.this, home.class));
-                                        finish();
-                                    }
-                                    else{
-                                        Toast.makeText(Login.this, "Username Not in Students !", Toast.LENGTH_SHORT).show();
-                                        FirebaseAuth.getInstance().signOut();
-                                    }
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
+                                    ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()){
+                                                Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(Login.this, studentLandingPage.class));
+                                                finish();
+                                            } else{
+                                                Toast.makeText(Login.this, "Username Not in Students !", Toast.LENGTH_SHORT).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                                    });
                                 } else if(comp.isChecked()){
-                                    if(checkUsernamePresence(username, true)){
-                                        Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(Login.this, home.class));
-                                        finish();
-                                    }
-                                    else{
-                                        Toast.makeText(Login.this, "Username Not in Companies !", Toast.LENGTH_SHORT).show();
-                                        FirebaseAuth.getInstance().signOut();
-                                    }
+                                    Log.e("Tag","Comp check entered");
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
+                                    ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()){
+                                                Log.e("Tag","Found Successfully");
+                                                Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(Login.this, companyLandingPage.class));
+                                                finish();
+                                            } else{
+                                                Log.e("Tag","Not Found");
+                                                Toast.makeText(Login.this, "Username Not in Companies !", Toast.LENGTH_SHORT).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                                    });
                                 }else{
                                     Toast.makeText(Login.this, "Please Check in your Type !", Toast.LENGTH_SHORT).show();
                                     FirebaseAuth.getInstance().signOut();
@@ -185,43 +200,6 @@ public class Login extends Activity {
         });
     }
 
-    private boolean checkUsernamePresence(String username, boolean a){
-        final boolean[] ans = {false};
-        if(!a){
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
-            ref.child("email").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        ans[0] = true;
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        else{
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
-            ref.child("email").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        ans[0] = true;
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        return ans[0];
-    }
-
     private void googleLogIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -234,7 +212,7 @@ public class Login extends Activity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()){
                 Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Login.this, home.class));
+                startActivity(new Intent(Login.this, studentLandingPage.class));
                 finish();
             }
         }
