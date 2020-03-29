@@ -7,6 +7,9 @@ public class company{
         this.name = name;
         this.email = email;
     }
+    public company(){
+
+    }
 
     public String company_getName() {
         return name;

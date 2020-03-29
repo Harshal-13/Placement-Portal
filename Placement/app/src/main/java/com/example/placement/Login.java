@@ -128,18 +128,15 @@ public class Login extends Activity {
                                         public void onCancelled(@NonNull DatabaseError databaseError) { }
                                     });
                                 } else if(comp.isChecked()){
-                                    Log.e("Tag","Comp check entered");
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
                                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if(dataSnapshot.exists()){
-                                                Log.e("Tag","Found Successfully");
                                                 Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(Login.this, companyLandingPage.class));
                                                 finish();
                                             } else{
-                                                Log.e("Tag","Not Found");
                                                 Toast.makeText(Login.this, "Username Not in Companies !", Toast.LENGTH_SHORT).show();
                                                 FirebaseAuth.getInstance().signOut();
                                             }

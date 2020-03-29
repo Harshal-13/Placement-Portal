@@ -18,22 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Signin"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Login"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".studentLandingPage"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".companyLandingPage"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".Signin"/>
+        <activity android:name=".Login"/>
+        <activity android:name=".studentLandingPage"/>
+        <activity android:name=".companyLandingPage"/>
+        <activity android:name=".add_intern_or_job_activity"/>
     </application>
 
 </manifest>
