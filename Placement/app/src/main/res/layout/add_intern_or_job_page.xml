@@ -28,7 +28,7 @@
         android:id="@+id/type_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="72dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginTop="8dp"
-            android:text="Application Deadline"
+            android:text="Deadline : "
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
@@ -158,11 +158,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:layout_marginStart="144dp"
             android:text="Date ?"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
+
+        <TextView
+            android:id="@+id/pdfAdderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="8dp"
+            android:text="Add Brochure"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateView" />
+
+        <TextView
+            android:id="@+id/pdfTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Click !"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pdfAdderTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -171,7 +193,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="436dp"
+        android:layout_marginTop="470dp"
         android:text="Register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_selector" />

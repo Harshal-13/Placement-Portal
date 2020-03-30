@@ -1,8 +1,5 @@
 package models;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 public class job {
     public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply;
 //    public LocalDate last_day_to_apply;
