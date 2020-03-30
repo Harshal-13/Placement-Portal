@@ -6,8 +6,20 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
     android:orientation="vertical"
-    android:paddingTop="50dp"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:paddingTop="50dp">
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_arrow_back_black"
+        android:onClick="back_to_main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_black" />
 
     <TextView
         android:id="@+id/textView"
@@ -16,7 +28,7 @@
         android:layout_marginStart="144dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="147dp"
-        android:text="SignUp"
+        android:text="@string/signup"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
-            android:text="Student"
+            android:text="@string/student"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -68,9 +80,9 @@
             android:id="@+id/fullNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Full Name"
+            android:text="@string/full_name"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,9 +100,9 @@
             android:id="@+id/UserNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Username"
+            android:text="@string/username"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fullname_edit_text" />
@@ -108,9 +120,9 @@
             android:id="@+id/PasswordTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Password"
+            android:text="@string/password"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_edit_text" />
@@ -128,9 +140,9 @@
             android:id="@+id/branchTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Branch"
+            android:text="@string/branch"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
@@ -148,9 +160,9 @@
             android:id="@+id/cpiTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="CPI"
+            android:text="@string/cpi"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
@@ -180,9 +192,9 @@
             android:id="@+id/companyNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Company Name"
+            android:text="@string/company_name"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -200,9 +212,9 @@
             android:id="@+id/companyemailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Username"
+            android:text="@string/username"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/company_name_edit_text" />
@@ -220,9 +232,9 @@
             android:id="@+id/companyPasswordTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Password"
+            android:text="@string/password"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/company_email_edit_text" />
@@ -242,29 +254,20 @@
         android:id="@+id/signup_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="436dp"
-        android:text="Signup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type_selector" />
+        android:layout_marginBottom="16dp"
+        android:text="@string/sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/already_registered"
+        tools:layout_editor_absoluteX="74dp" />
 
     <TextView
         android:id="@+id/already_registered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Already Registered ?"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/already_registered"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_button" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:onClick="back_to_main"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back_black" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
