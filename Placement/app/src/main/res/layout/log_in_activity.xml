@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
     android:orientation="vertical"
-    android:paddingTop="50dp"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:paddingTop="50dp">
 
     <TextView
         android:id="@+id/textView2"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginTop="36dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
-            android:text="Student"
+            android:text="@string/student"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/company_selector_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Company"
+            android:text="@string/company"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -55,10 +55,10 @@
         android:id="@+id/UserNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_marginStart="34dp"
         android:layout_marginTop="200dp"
-        android:text="Username"
+        android:text="@string/username"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -79,10 +79,10 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_marginStart="34dp"
         android:layout_marginTop="8dp"
-        android:text="Password"
+        android:text="@string/password"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username_edit_text" />
@@ -103,9 +103,9 @@
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="300dp"
-        android:text="Login"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="312dp"
+        android:text="@string/login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="124dp"
-        android:text="Or Sign in using"
+        android:text="@string/or_sign_in_using"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
@@ -128,7 +128,9 @@
         android:layout_marginEnd="108dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+    </com.google.android.gms.common.SignInButton>
 
     <TextView
         android:id="@+id/dont_have_an_account"
@@ -140,13 +142,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="51dp"
-        android:layout_height="40dp"
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_arrow_back_black"
         android:onClick="back_to_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/left_curve_arrow" />
+        app:srcCompat="@drawable/ic_arrow_back_black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
