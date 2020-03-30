@@ -2,12 +2,15 @@ package com.example.placement;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ public class Login extends Activity {
     TextView dontHaveAnAccount, mOption;
     SignInButton googleLogin;
     GoogleSignInClient mGoogleSignInClient;
+    ImageButton backtomain;
     int RC_SIGN_IN = 1;
 
     @Override
@@ -72,6 +76,8 @@ public class Login extends Activity {
         dontHaveAnAccount = findViewById(R.id.dont_have_an_account);
         mOption = findViewById(R.id.textView4);
         mFirebaseAuth = FirebaseAuth.getInstance();
+        backtomain = findViewById(R.id.imageButton);
+        backtomain.setVisibility(View.VISIBLE);
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
