@@ -35,11 +35,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null){
-            startActivity(new Intent(MainActivity.this, studentLandingPage.class));
-        }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -67,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()){
                                 Toast.makeText(MainActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this, studentLandingPage.class));
+                                startActivity(new Intent(MainActivity.this, companyLandingPage.class));
                                 finish();
                             }
                         }
@@ -77,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account != null){
+            startActivity(new Intent(MainActivity.this, studentLandingPage.class));
+        }
     }
 
     public void goto_login(View view) {

@@ -28,7 +28,7 @@
         android:id="@+id/type_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="72dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
             android:id="@+id/intern_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:paddingStart="0dp"
             android:text="@string/intern"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -107,7 +107,7 @@
             android:id="@+id/branchTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
             android:text="@string/branches_allowed"
             android:textSize="20sp"
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="@string/application_deadline"
+            android:text="@string/deadline"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
@@ -158,7 +158,8 @@
             android:id="@+id/dateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="start"
+            android:layout_marginStart="116dp"
             android:text="@string/date"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -166,13 +167,13 @@
             app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
 
         <TextView
-            android:id="@+id/pdfAdderTextView"
+            android:id="@+id/pdfAddTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="Add Brochure"
-            android:textSize="20sp"
+            android:text="@string/add_a_brochure"
+            android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
@@ -180,11 +181,13 @@
             android:id="@+id/pdfTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Click !"
-            android:textSize="25sp"
+            android:layout_gravity="center_horizontal"
+            android:text="No File Selected"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pdfAdderTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/pdfAddTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -194,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="470dp"
-        android:text="Register"
+        android:text="@string/register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_selector" />
 
@@ -205,6 +208,7 @@
         android:onClick="back_to_company_page"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back_black" />
+        app:srcCompat="@drawable/ic_arrow_back_black"
+        android:contentDescription="@string/back_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

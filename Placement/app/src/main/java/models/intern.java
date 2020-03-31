@@ -1,10 +1,12 @@
 package models;
 
-public class intern {
-    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply;
-//    public LocalDate last_day_to_apply;
+import java.time.LocalDate;
+import java.util.Date;
 
-    public intern(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed) {
+public class intern {
+    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply,url_of_brochure;
+
+    public intern(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed, String url) {
         this.company_name = company_name;
         this.company_id = company_id;
         this.position = position;
@@ -12,7 +14,12 @@ public class intern {
         this.cpi_cutoff = cpi_cutoff;
         this.last_day_to_apply = last_day_to_apply;
         this.branches_allowed = branches_allowed;
+        this.url_of_brochure = url;
     }
+
+    public String getUrl_of_brochure() { return url_of_brochure; }
+
+    public void setUrl_of_brochure(String url_of_brochure) { this.url_of_brochure = url_of_brochure; }
 
     public String getCompany_name() {
         return company_name;
@@ -58,15 +65,11 @@ public class intern {
         return branches_allowed;
     }
 
-    public void setBranches_allowed(String branches_allowed) {
-        this.branches_allowed = branches_allowed;
-    }
+    public void setBranches_allowed(String branches_allowed) { this.branches_allowed = branches_allowed; }
 
     public String getLast_day_to_apply() {
         return last_day_to_apply;
     }
 
-    public void setLast_day_to_apply(String last_day_to_apply) {
-        this.last_day_to_apply = last_day_to_apply;
-    }
+    public void setLast_day_to_apply(String last_day_to_apply) { this.last_day_to_apply = last_day_to_apply; }
 }
