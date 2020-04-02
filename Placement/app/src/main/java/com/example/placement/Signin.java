@@ -1,7 +1,9 @@
 package com.example.placement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +18,17 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Objects;
 
@@ -29,10 +38,15 @@ import models.student;
 public class Signin extends Activity {
     EditText studentName, studentEmail ,studentPassword, studentBranch, studentCPI, companyName, companyEmail, companyPassword;
     FirebaseAuth mFirebaseAuth;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
     Button signupButton;
     AppCompatRadioButton stud, comp;
     TextView alreadyRegistered;
     ConstraintLayout studLayout, compLayout;
+    Uri FilePathUri;
+    ProgressDialog progressDialog;
+    String url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +67,7 @@ public class Signin extends Activity {
         companyEmail = findViewById(R.id.company_email_edit_text);
         companyPassword = findViewById(R.id.company_password_edit_text);
 
+        progressDialog = new ProgressDialog(Signin.this);
         signupButton = findViewById(R.id.signup_button);
         alreadyRegistered = findViewById(R.id.already_registered);
         alreadyRegistered.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +91,11 @@ public class Signin extends Activity {
                     if(name.isEmpty() || username.isEmpty() || pwd.isEmpty() || branch.isEmpty() || cpi.isEmpty()){
                         Toast.makeText(Signin.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
                     }
-//                    else if(Integer.valueOf(cpi)>10){
-//                        Toast.makeText(Signin.this, "CPI can't be more than 10 !",Toast.LENGTH_SHORT).show();
-//                    }
                     else if(pwd.length()<6){
                         Toast.makeText(Signin.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(FilePathUri==null){
+                        Toast.makeText(Signin.this,"Select a File",Toast.LENGTH_SHORT).show();
                     }
                     else {
                         mFirebaseAuth.createUserWithEmailAndPassword(username,pwd).addOnCompleteListener(Signin.this, new OnCompleteListener<AuthResult>() {
@@ -90,20 +105,45 @@ public class Signin extends Activity {
                                     Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
-                                    student student = new student(name, username, branch, cpi);
-                                    FirebaseDatabase.getInstance().getReference("Students")
-                                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                            .setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    progressDialog.setTitle("Profile Pic is Uploading...");
+                                    progressDialog.show();
+                                    storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Signin.this,studentLandingPage.class));
-                                                finish();
-                                            }
-                                            else{
-                                                Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                            }
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Signin.this,"Upload Successful",Toast.LENGTH_SHORT).show();
+
+                                            storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    url = uri.toString();
+                                                    student student = new student(name, username, branch, cpi, url);
+                                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
+                                                                startActivity(new Intent(Signin.this,companyLandingPage.class));
+                                                                finish();
+                                                            }
+                                                            else{
+                                                                Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(Signin.this,"Upload Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                                         }
                                     });
                                 }
@@ -122,6 +162,9 @@ public class Signin extends Activity {
                     else if(pwd.length()<6){
                         Toast.makeText(Signin.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();
                     }
+                    else if(FilePathUri==null){
+                        Toast.makeText(Signin.this,"Select a File",Toast.LENGTH_SHORT).show();
+                    }
                     else {
                         mFirebaseAuth.createUserWithEmailAndPassword(username,pwd).addOnCompleteListener(Signin.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -130,20 +173,45 @@ public class Signin extends Activity {
                                     Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
-                                    company company = new company(name, username);
-                                    FirebaseDatabase.getInstance().getReference("Companies")
-                                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                            .setValue(company).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    progressDialog.setTitle("Profile is Uploading...");
+                                    progressDialog.show();
+                                    storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Signin.this,companyLandingPage.class));
-                                                finish();
-                                            }
-                                            else{
-                                                Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                            }
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Signin.this,"Upload Successful",Toast.LENGTH_SHORT).show();
+
+                                            storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    url = uri.toString();
+                                                    company company = new company(name, username, url);
+                                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(company).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if(task.isSuccessful()){
+                                                                Toast.makeText(Signin.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
+                                                                startActivity(new Intent(Signin.this,companyLandingPage.class));
+                                                                finish();
+                                                            }
+                                                            else{
+                                                                Toast.makeText(Signin.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(Signin.this,"Upload Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                                         }
                                     });
                                 }
@@ -161,6 +229,8 @@ public class Signin extends Activity {
                     comp.setChecked(false);
                     studLayout.setVisibility(View.VISIBLE);
                     compLayout.setVisibility(View.GONE);
+                    storageReference = FirebaseStorage.getInstance().getReference("Students");
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Students");
                 }
             }
         });
@@ -172,6 +242,8 @@ public class Signin extends Activity {
                     stud.setChecked(false);
                     compLayout.setVisibility(View.VISIBLE);
                     studLayout.setVisibility(View.GONE);
+                    storageReference = FirebaseStorage.getInstance().getReference("Companies");
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Companies");
                 }
             }
         });
@@ -181,5 +253,20 @@ public class Signin extends Activity {
         Intent gotoMainPage = new Intent(this, MainActivity.class);
         startActivity(gotoMainPage);
         finish();
+    }
+
+    public void browseImage(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*").setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 13);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 13 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            FilePathUri = data.getData();
+            Toast.makeText(this,"Image Selected",Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -9,6 +9,18 @@
     android:paddingTop="50dp"
     android:padding="30dp">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myRecycler"
+        android:layout_width="332dp"
+        android:layout_height="448dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="61dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
@@ -13,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="144dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="147dp"
         android:text="@string/signup"
         android:textSize="40sp"
@@ -166,6 +166,27 @@
             app:layout_constraintTop_toBottomOf="@+id/cpiTextView"
             android:autofillHints="CPI" />
 
+        <TextView
+            android:id="@+id/StudentPicTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="12dp"
+            android:text="Profile Pic :"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
+
+        <Button
+            android:id="@+id/browse1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:text="Browse Image"
+            android:onClick="browseImage"
+            app:layout_constraintStart_toEndOf="@+id/StudentPicTextView"
+            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -238,15 +259,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/companyPasswordTextView" />
 
+        <TextView
+            android:id="@+id/CompanyPicTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="20dp"
+            android:text="Profile Pic :"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company_password_edit_text" />
+
+        <Button
+            android:id="@+id/browse2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Browse Image"
+            android:onClick="browseImage"
+            app:layout_constraintStart_toEndOf="@+id/CompanyPicTextView"
+            app:layout_constraintTop_toBottomOf="@+id/company_password_edit_text" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/signup_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="436dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="472dp"
+        android:layout_marginEnd="30dp"
         android:text="@string/signup"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_selector" />
 
@@ -255,6 +300,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
         android:text="@string/already_registered"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"

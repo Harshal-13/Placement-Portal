@@ -3,6 +3,7 @@ package com.example.placement;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -30,9 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
@@ -48,16 +51,17 @@ public class add_intern_or_job_activity extends Activity {
     String date, url;
     DatePickerDialog.OnDateSetListener onDateSetListener;
     FirebaseAuth mFirebaseAuth;
-    FirebaseStorage storage;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
     Button registerButton;
     AppCompatRadioButton internButton, jobButton;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_intern_or_job_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
 
         opPosition = findViewById(R.id.position_edit_text);
         opDescription = findViewById(R.id.description_edit_text);
@@ -69,6 +73,7 @@ public class add_intern_or_job_activity extends Activity {
         jobButton = findViewById(R.id.job_selector);
         pdfSelect = findViewById(R.id.pdfAddTextView);
         pdfPath = findViewById(R.id.pdfTextView);
+        progressDialog = new ProgressDialog(add_intern_or_job_activity.this);
 
         dateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +118,7 @@ public class add_intern_or_job_activity extends Activity {
             @Override
             public void onClick(View v) {
                 final String companyName = getIntent().getStringExtra("Company_Name");
+                final String companyPic = getIntent().getStringExtra("Profile_Pic");
                 final String position = opPosition.getText().toString();
                 final String description = opDescription.getText().toString();
                 final String branch = opBranchesAllowed.getText().toString();
@@ -128,21 +134,17 @@ public class add_intern_or_job_activity extends Activity {
                     Toast.makeText(add_intern_or_job_activity.this,"Select a File",Toast.LENGTH_SHORT).show();
                 }
                 else if(url==null){
-                    Toast.makeText(add_intern_or_job_activity.this,"Wait,x File is Uploading",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(add_intern_or_job_activity.this,"Wait, File is Uploading",Toast.LENGTH_SHORT).show();
                 }
                 else {
-
                     if(internButton.isChecked()){
-                        intern intern = new intern(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url);
-                        FirebaseDatabase.getInstance().getReference("Internships")
-                                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                .child(position)
-                                .setValue(intern).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        intern intern = new intern(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic);
+                        databaseReference.setValue(intern).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(add_intern_or_job_activity.this, "Intern Registration Successful !!", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(add_intern_or_job_activity.this, add_intern_or_job_activity.class));
+                                    startActivity(new Intent(add_intern_or_job_activity.this, companyLandingPage.class));
                                     finish();
                                 }
                                 else{
@@ -152,16 +154,13 @@ public class add_intern_or_job_activity extends Activity {
                         });
                     }
                     else if(jobButton.isChecked()){
-                        job job = new job(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url);
-                        FirebaseDatabase.getInstance().getReference("Jobs")
-                                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                .child(position)
-                                .setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        job job = new job(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic);
+                        databaseReference.setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(add_intern_or_job_activity.this, "Intern Registration Successful !!", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(add_intern_or_job_activity.this, add_intern_or_job_activity.class));
+                                    startActivity(new Intent(add_intern_or_job_activity.this, companyLandingPage.class));
                                     finish();
                                 }
                                 else{
@@ -179,6 +178,12 @@ public class add_intern_or_job_activity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(internButton.isChecked()){
                     jobButton.setChecked(false);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Internships")
+                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    storageReference = FirebaseStorage.getInstance().getReference("Internships")
+                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                            .child(Objects.requireNonNull(databaseReference.push().getKey()));
+                    databaseReference = databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey()));
                 }
             }
         });
@@ -188,6 +193,12 @@ public class add_intern_or_job_activity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(jobButton.isChecked()){
                     internButton.setChecked(false);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Internships")
+                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    storageReference = FirebaseStorage.getInstance().getReference("Jobs")
+                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                            .child(Objects.requireNonNull(databaseReference.push().getKey()));
+                    databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey()));
                 }
             }
         });
@@ -223,36 +234,22 @@ public class add_intern_or_job_activity extends Activity {
             pdfUri = data.getData();
             String filePath = "File Selected: " + Objects.requireNonNull(data.getData()).getPath();
 
-            if(jobButton.isChecked()){
-                storage.getReference("Jobs")
-                        .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                        .child(Objects.requireNonNull(data.getData().getPath()))
-                        .putFile(pdfUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        url = Objects.requireNonNull(Objects.requireNonNull(taskSnapshot.getMetadata()).getReference()).getDownloadUrl().toString();
-                        Toast.makeText(add_intern_or_job_activity.this,"Upload Successful",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(add_intern_or_job_activity.this,"Upload Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+            if(jobButton.isChecked() || internButton.isChecked()){
+                progressDialog.setTitle("File is Uploading...");
+                progressDialog.show();
 
-                    }
-                });
-            } else if(internButton.isChecked()){
-                storage.getReference("Interns")
-                        .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                        .child(Objects.requireNonNull(data.getData().getPath()))
-                        .putFile(pdfUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                storageReference.putFile(pdfUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        url = Objects.requireNonNull(Objects.requireNonNull(taskSnapshot.getMetadata()).getReference()).getDownloadUrl().toString();
+                        progressDialog.dismiss();
                         Toast.makeText(add_intern_or_job_activity.this,"Upload Successful",Toast.LENGTH_SHORT).show();
+
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                url = uri.toString();
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -262,10 +259,12 @@ public class add_intern_or_job_activity extends Activity {
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(add_intern_or_job_activity.this,"Uploading, Please wait",Toast.LENGTH_SHORT).show();
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                     }
                 });
-            } else{
+            }
+            else{
                 Toast.makeText(add_intern_or_job_activity.this,"Please select a type, choose file again",Toast.LENGTH_SHORT).show();
             }
             pdfPath.setText(filePath);
