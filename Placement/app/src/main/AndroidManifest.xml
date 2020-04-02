@@ -24,6 +24,9 @@
         <activity android:name=".studentLandingPage"/>
         <activity android:name=".companyLandingPage"/>
         <activity android:name=".add_intern_or_job_activity"/>
+        <activity android:name=".student_intern_activity"/>
+        <activity android:name=".student_job_activity"/>
+        <activity android:name=".descriptionActivity"/>
     </application>
 
 </manifest>

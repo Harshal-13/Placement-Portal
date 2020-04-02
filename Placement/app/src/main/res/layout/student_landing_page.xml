@@ -9,17 +9,42 @@
     android:paddingTop="50dp"
     android:padding="30dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myRecycler"
-        android:layout_width="332dp"
-        android:layout_height="448dp"
-        android:layout_marginStart="61dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="61dp"
-        android:visibility="visible"
+    <TextView
+        android:id="@+id/student_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="131dp"
+        android:text="Student"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/to_intern_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="320dp"
+        android:onClick="to_intern"
+        android:text="Check Interns"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/to_job_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="224dp"
+        android:onClick="to_job"
+        android:text="Check Jobs"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/logout_button"

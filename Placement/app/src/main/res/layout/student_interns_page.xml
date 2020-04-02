@@ -10,37 +10,37 @@
     android:padding="30dp">
 
     <TextView
-        android:id="@+id/company_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginEnd="119dp"
-        android:text="Company"
-        android:textSize="40sp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="112dp"
+        android:text="@string/internships"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/goto_add_intern-job_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="119dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="164dp"
-        android:onClick="goto_add_page"
-        android:text="@string/add_interns_jobs"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myRecycler"
+        android:layout_width="332dp"
+        android:layout_height="448dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="61dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/logout_button"
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="17dp"
-        android:text="@string/logout"
-        android:onClick="signOut"
+        android:text="@string/back"
+        android:onClick="back_to_student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -48,7 +48,7 @@ public class add_intern_or_job_activity extends Activity {
     EditText opPosition, opDescription, opCpi, opBranchesAllowed;
     TextView dateView, pdfSelect, pdfPath;
     Uri pdfUri;
-    String date, url;
+    String date, url, internID, jobID;
     DatePickerDialog.OnDateSetListener onDateSetListener;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
@@ -84,7 +84,7 @@ public class add_intern_or_job_activity extends Activity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(add_intern_or_job_activity.this,R.style.Theme_AppCompat_DayNight_Dialog,onDateSetListener,year,month,day);
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 dialog.show();
             }
         });
@@ -108,8 +108,6 @@ public class add_intern_or_job_activity extends Activity {
                     }
                 }
                 dateView.setText(date_str);
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
-//                date = LocalDate.parse(date_str, formatter);
                 date = date_str;
             }
         };
@@ -138,7 +136,7 @@ public class add_intern_or_job_activity extends Activity {
                 }
                 else {
                     if(internButton.isChecked()){
-                        intern intern = new intern(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic);
+                        intern intern = new intern(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic,internID);
                         databaseReference.setValue(intern).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -154,7 +152,7 @@ public class add_intern_or_job_activity extends Activity {
                         });
                     }
                     else if(jobButton.isChecked()){
-                        job job = new job(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic);
+                        job job = new job(companyName, Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),position,description,cpi,date,branch,url,companyPic,jobID);
                         databaseReference.setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -180,10 +178,11 @@ public class add_intern_or_job_activity extends Activity {
                     jobButton.setChecked(false);
                     databaseReference = FirebaseDatabase.getInstance().getReference("Internships")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    internID = Objects.requireNonNull(databaseReference.push().getKey());
                     storageReference = FirebaseStorage.getInstance().getReference("Internships")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                            .child(Objects.requireNonNull(databaseReference.push().getKey()));
-                    databaseReference = databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey()));
+                            .child(internID);
+                    databaseReference = databaseReference.child(internID);
                 }
             }
         });
@@ -195,10 +194,11 @@ public class add_intern_or_job_activity extends Activity {
                     internButton.setChecked(false);
                     databaseReference = FirebaseDatabase.getInstance().getReference("Internships")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    jobID = Objects.requireNonNull(databaseReference.push().getKey());
                     storageReference = FirebaseStorage.getInstance().getReference("Jobs")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                            .child(Objects.requireNonNull(databaseReference.push().getKey()));
-                    databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey()));
+                            .child(internID);
+                    databaseReference = databaseReference.child(jobID);
                 }
             }
         });

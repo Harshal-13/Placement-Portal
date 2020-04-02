@@ -1,9 +1,9 @@
 package models;
 
 public class intern {
-    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply,url_of_brochure, imageURL;
+    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply,url_of_brochure, imageURL,internID;
 
-    public intern(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed, String url, String imageURL) {
+    public intern(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed, String url, String imageURL, String internID) {
         this.company_name = company_name;
         this.company_id = company_id;
         this.position = position;
@@ -13,6 +13,7 @@ public class intern {
         this.branches_allowed = branches_allowed;
         this.url_of_brochure = url;
         this.imageURL = imageURL;
+        this.internID = internID;
     }
 
     public intern(){ }
@@ -68,4 +69,8 @@ public class intern {
     public String getImageURL() { return imageURL; }
 
     public void setImageURL(String imageURL) { this.imageURL = imageURL; }
+
+    public String getInternID() { return internID; }
+
+    public void setInternID(String internID) { this.internID = internID; }
 }

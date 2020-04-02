@@ -1,9 +1,9 @@
 package models;
 
 public class job {
-    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, url_of_brochure, last_day_to_apply, imageUrl;
+    public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, url_of_brochure, last_day_to_apply, imageURL, jobID;
 
-    public job(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed,String url, String imageUrl) {
+    public job(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed,String url, String imageUrl, String jobID) {
         this.company_name = company_name;
         this.company_id = company_id;
         this.position = position;
@@ -12,7 +12,8 @@ public class job {
         this.last_day_to_apply = last_day_to_apply;
         this.branches_allowed = branches_allowed;
         this.url_of_brochure = url;
-        this.imageUrl = imageUrl;
+        this.imageURL = imageUrl;
+        this.jobID = jobID;
     }
 
     public job(){ }
@@ -73,7 +74,11 @@ public class job {
 
     public void setLast_day_to_apply(String last_day_to_apply) { this.last_day_to_apply = last_day_to_apply; }
 
-    public String getImageUrl() { return imageUrl; }
+    public String getImageURL() { return imageURL; }
 
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setImageURL(String imageUrl) { this.imageURL = imageUrl; }
+
+    public String getJobID() { return jobID; }
+
+    public void setJobID(String jobID) { this.jobID = jobID; }
 }
