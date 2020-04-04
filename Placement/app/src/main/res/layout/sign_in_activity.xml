@@ -220,7 +220,7 @@
             app:layout_constraintTop_toBottomOf="@+id/companyNameTextView" />
 
         <TextView
-            android:id="@+id/companyemailTextView"
+            android:id="@+id/companyEmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -237,7 +237,7 @@
             android:layout_alignParentBottom="true"
             android:inputType="textEmailAddress"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/companyemailTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/companyEmailTextView" />
 
         <TextView
             android:id="@+id/companyPasswordTextView"
@@ -265,7 +265,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="20dp"
-            android:text="Profile Pic :"
+            android:text="@string/profile_pic"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/company_password_edit_text" />
@@ -276,7 +276,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:text="Browse Image"
+            android:text="@string/browse_image"
             android:onClick="browseImage"
             app:layout_constraintStart_toEndOf="@+id/CompanyPicTextView"
             app:layout_constraintTop_toBottomOf="@+id/company_password_edit_text" />
@@ -306,14 +306,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_button" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_arrow_back_black"
         android:onClick="back_to_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back_black"
-        android:contentDescription="@string/back_icon" />
+        tools:srcCompat="@drawable/ic_arrow_back_black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

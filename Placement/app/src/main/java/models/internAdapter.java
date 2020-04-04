@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 
 
 public class internAdapter extends RecyclerView.Adapter<internAdapter.MyViewHolder> {
-    private internAdapter.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
 
     private Context context;
     private ArrayList<intern> interns;
@@ -40,12 +39,12 @@ public class internAdapter extends RecyclerView.Adapter<internAdapter.MyViewHold
         mListener = listener;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder
+    static class MyViewHolder extends RecyclerView.ViewHolder
     {
         TextView name,co_position;
         ImageView ImageUrl;
         Button btn;
-        public MyViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        MyViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             name = itemView.findViewById(R.id.company_name);
             co_position = itemView.findViewById(R.id.company_position);

@@ -156,7 +156,7 @@ public class Login extends Activity {
         dontHaveAnAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this, Signin.class));
+                startActivity(new Intent(Login.this, SignUp.class));
                 finish();
             }
         });

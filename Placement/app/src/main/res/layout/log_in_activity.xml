@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_horizontal|top"
     android:orientation="vertical"
     android:paddingTop="50dp"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginTop="36dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,9 @@
             android:id="@+id/student_selector_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:text="Student"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
+            android:text="@string/student"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -44,7 +45,7 @@
             android:id="@+id/company_selector_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Company"
+            android:text="@string/company"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -55,10 +56,10 @@
         android:id="@+id/UserNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_marginStart="34dp"
         android:layout_marginTop="200dp"
-        android:text="Username"
+        android:text="@string/username"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -79,10 +80,10 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_marginStart="34dp"
         android:layout_marginTop="8dp"
-        android:text="Password"
+        android:text="@string/password"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username_edit_text" />
@@ -105,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="300dp"
-        android:text="Login"
+        android:text="@string/log_in"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -115,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="124dp"
-        android:text="Or Sign in using"
+        android:text="@string/or_sign_in_using"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
@@ -136,17 +137,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:layout_marginEnd="96dp"
-        android:text="Don't have an account ?"
+        android:text="@string/don_t_have_an_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="51dp"
-        android:layout_height="40dp"
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_arrow_back_black"
         android:onClick="back_to_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/left_curve_arrow" />
+        app:srcCompat="@drawable/ic_arrow_back_black"
+        tools:srcCompat="@drawable/ic_arrow_back_black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

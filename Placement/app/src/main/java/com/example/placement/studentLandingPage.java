@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-import models.company;
+import models.student;
 
 public class studentLandingPage extends Activity {
     FirebaseAuth mFirebaseAuth;
@@ -45,9 +45,9 @@ public class studentLandingPage extends Activity {
         ref.child("Students").child(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String[] cName = Objects.requireNonNull(dataSnapshot.getValue(company.class)).getName().split(" ");
-                String s = "HI " + cName[0] + " !";
-                studentName.setText(cName[0]);
+                String[] cName = Objects.requireNonNull(dataSnapshot.getValue(student.class)).getName().split(" ");
+                String s = "Hi " + cName[0] + " !";
+                studentName.setText(s);
             }
 
             @Override
@@ -67,6 +67,11 @@ public class studentLandingPage extends Activity {
         finish();
     }
 
+    public void profile(View view) {
+        startActivity(new Intent(studentLandingPage.this, ProfileActivity.class));
+        finish();
+    }
+
     public void to_intern(View view) {
         startActivity(new Intent(studentLandingPage.this, student_intern_activity.class));
         finish();
@@ -74,6 +79,11 @@ public class studentLandingPage extends Activity {
 
     public void to_job(View view) {
         startActivity(new Intent(studentLandingPage.this, student_job_activity.class));
+        finish();
+    }
+
+    public void to_applications_page(View view) {
+        startActivity(new Intent(studentLandingPage.this, stud_applications.class));
         finish();
     }
 }

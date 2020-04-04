@@ -50,11 +50,8 @@ public class companyLandingPage extends Activity {
                 cPic = Objects.requireNonNull(dataSnapshot.getValue(company.class)).getProfile_pic();
                 companyName.setText(cName);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
@@ -70,8 +67,19 @@ public class companyLandingPage extends Activity {
         finish();
     }
 
+    public void goto_applications(View view){
+        startActivity(new Intent(companyLandingPage.this, comp_applications.class));
+        finish();
+    }
+
+    public void goto_compProfile(View view) {
+        startActivity(new Intent(companyLandingPage.this, Companyprofile.class));
+        finish();
+    }
+
     public void goto_add_page(View view) {
         startActivity(new Intent(companyLandingPage.this, add_intern_or_job_activity.class).putExtra("Company_Name", cName).putExtra("Profile_Pic", cPic));
         finish();
     }
 }
+

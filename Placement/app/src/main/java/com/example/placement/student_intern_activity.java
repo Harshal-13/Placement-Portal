@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -49,33 +48,48 @@ public class student_intern_activity extends Activity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progressDialog.dismiss();
-                list = new ArrayList<>();
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-                {
-                    Iterable<DataSnapshot>  snap = dataSnapshot1.getChildren();
-                    for(DataSnapshot dataSnapshot2: snap) {
-                        intern p = dataSnapshot2.getValue(intern.class);
-                        list.add(p);
+                if(dataSnapshot.exists()) {
+                    progressDialog.dismiss();
+                    list = new ArrayList<>();
+                    for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                    {
+                        Iterable<DataSnapshot>  snap = dataSnapshot1.getChildren();
+                        for(DataSnapshot dataSnapshot2: snap) {
+                            intern p = dataSnapshot2.getValue(intern.class);
+                            list.add(p);
+                        }
+                    }
+                    if (list.isEmpty()) {
+                        Toast.makeText(student_intern_activity.this, "No internships are available", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(student_intern_activity.this, studentLandingPage.class));
+                        finish();
+                    }
+                    else{
+                        adapter = new internAdapter(student_intern_activity.this, list);
+                        recyclerView.setAdapter(adapter);
+
+                        adapter.setOnItemClickListener(new internAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                String compID = list.get(position).getCompany_id();
+                                String internID = list.get(position).getInternID();
+
+                                startActivity(new Intent(student_intern_activity.this, descriptionActivity.class)
+                                        .putExtra("Type", "1").putExtra("Company_ID", compID).putExtra("Intern_ID", internID));
+                            }
+                        });
                     }
                 }
-                adapter = new internAdapter(student_intern_activity.this, list);
-                recyclerView.setAdapter(adapter);
-
-                adapter.setOnItemClickListener(new internAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-                        String compID = list.get(position).getCompany_id();
-                        String internID = list.get(position).getInternID();
-
-                        startActivity(new Intent(student_intern_activity.this, descriptionActivity.class)
-                                .putExtra("Type","1").putExtra("Company_ID",compID).putExtra("Intern_ID",internID));
-                    }
-                });
+                else{
+                    progressDialog.dismiss();
+                    Toast.makeText(student_intern_activity.this, "No internships are available", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(student_intern_activity.this, studentLandingPage.class));
+                    finish();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(student_intern_activity.this, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(student_intern_activity.this, "OOPS.... Something is wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }

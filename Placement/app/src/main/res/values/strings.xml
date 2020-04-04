@@ -9,11 +9,8 @@
     <string name="the_user_name_was">The user name was</string>
     <string name="logout">Logout</string>
     <string name="signup">SignUp</string>
-    <string name="student">Student</string>
-    <string name="company">Company</string>
     <string name="full_name">Full Name</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="branch">Branch</string>
     <string name="cpi">CPI</string>
     <string name="company_name">Company Name</string>
@@ -35,4 +32,15 @@
     <string name="back">Back</string>
     <string name="internships">Internships</string>
     <string name="jobs">Jobs</string>
+    <string name="browse_image">Browse Image</string>
+    <string name="profile_pic">Profile Pic :</string>
+    <string name="login">Login</string>
+    <string name="student">Student</string>
+    <string name="company">Company</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="or_sign_in_using">Or Sign in using</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
+    <string name="view_profile">View Profile</string>
+    <string name="view_applications">View Applications</string>
 </resources>

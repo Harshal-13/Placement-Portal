@@ -11,6 +11,8 @@ public class student {
         this.profile_pic = url;
     }
 
+    public student(){ }
+
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }

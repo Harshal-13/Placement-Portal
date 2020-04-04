@@ -23,7 +23,6 @@ import java.util.Objects;
 import static com.example.placement.R.layout.activity_main;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     FirebaseAuth mFirebaseAuth;
 
     @Override
@@ -35,18 +34,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if(mFirebaseUser != null){
+                if (mFirebaseUser != null) {
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 Toast.makeText(MainActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(MainActivity.this, studentLandingPage.class));
                                 finish();
@@ -60,14 +58,16 @@ public class MainActivity extends AppCompatActivity {
                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 Toast.makeText(MainActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(MainActivity.this, companyLandingPage.class));
                                 finish();
                             }
                         }
+
                         @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
                     });
                 }
             }
@@ -85,10 +85,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goto_signup(View view) {
-        Intent gotoSignupPage = new Intent(this, Signin.class);
-        startActivity(gotoSignupPage);
+    public void goto_signUp(View view) {
+        Intent gotoSignUpPage = new Intent(this, SignUp.class);
+        startActivity(gotoSignUpPage);
         finish();
     }
-
 }

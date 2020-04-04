@@ -192,12 +192,12 @@ public class add_intern_or_job_activity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(jobButton.isChecked()){
                     internButton.setChecked(false);
-                    databaseReference = FirebaseDatabase.getInstance().getReference("Internships")
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Jobs")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                     jobID = Objects.requireNonNull(databaseReference.push().getKey());
                     storageReference = FirebaseStorage.getInstance().getReference("Jobs")
                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                            .child(internID);
+                            .child(jobID);
                     databaseReference = databaseReference.child(jobID);
                 }
             }

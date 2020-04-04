@@ -1,6 +1,5 @@
 package com.example.placement;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,26 +21,24 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import models.intern;
-import models.internAdapter;
-import models.job;
-import models.jobAdapter;
+import models.applicant_adapter;
+import models.application;
 
-public class student_job_activity extends Activity {
+public class comp_applications extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     DatabaseReference reference;
     RecyclerView recyclerView;
-    ArrayList<job> list;
-    jobAdapter adapter;
+    ArrayList<application> list;
+    applicant_adapter adapter;
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_jobs_page);
+        setContentView(R.layout.activity_comp_applications);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        reference =  FirebaseDatabase.getInstance().getReference("Jobs");
+        reference =  FirebaseDatabase.getInstance().getReference("Applicants");
         recyclerView = findViewById(R.id.myRecycler);
         recyclerView.setLayoutManager( new LinearLayoutManager(this));
         progressDialog = new ProgressDialog(this);
@@ -56,43 +54,37 @@ public class student_job_activity extends Activity {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         Iterable<DataSnapshot> snap = dataSnapshot1.getChildren();
                         for (DataSnapshot dataSnapshot2 : snap) {
-                            job p = dataSnapshot2.getValue(job.class);
-                            list.add(p);
+                            Iterable<DataSnapshot> snap2 = dataSnapshot2.getChildren();
+                            for (DataSnapshot dataSnapshot3 : snap2) {
+                                application p = dataSnapshot3.getValue(application.class);
+                                list.add(p);
+                            }
                         }
-                    }
-                    if (list.isEmpty()) {
-                        Toast.makeText(student_job_activity.this, "No jobs are available", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(student_job_activity.this, studentLandingPage.class));
-                    } else {
-                        adapter = new jobAdapter(student_job_activity.this, list);
+                        if (list.isEmpty()) {
+                            Toast.makeText(comp_applications.this, "No Applications are available", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(comp_applications.this, companyLandingPage.class));
+                        }
+                        adapter = new applicant_adapter(comp_applications.this, list);
                         recyclerView.setAdapter(adapter);
 
-                        adapter.setOnItemClickListener(new jobAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                String compID = list.get(position).getCompany_id();
-                                String jobID = list.get(position).getJobID();
-
-                                startActivity(new Intent(student_job_activity.this, descriptionActivity.class)
-                                        .putExtra("Type", "2").putExtra("Company_ID", compID).putExtra("Job_ID", jobID));
-                            }
-                        });
                     }
                 }
                 else{
                     progressDialog.dismiss();
-                    Toast.makeText(student_job_activity.this, "No jobs are available", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(student_job_activity.this, studentLandingPage.class));
-                }            }
+                    Toast.makeText(comp_applications.this, "No Applications are available", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(comp_applications.this, companyLandingPage.class));
+                }
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(student_job_activity.this, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(comp_applications.this, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void back_to_student(View view) {
-        startActivity(new Intent(student_job_activity.this, studentLandingPage.class));
+        startActivity(new Intent(comp_applications.this, companyLandingPage.class));
         finish();
     }
 }

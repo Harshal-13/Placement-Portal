@@ -1,6 +1,8 @@
 package models;
 
-public class intern {
+import java.io.Serializable;
+
+public class intern implements Serializable {
     public String company_name, company_id, position, description, cpi_cutoff, branches_allowed, last_day_to_apply,url_of_brochure, imageURL,internID;
 
     public intern(String company_name, String company_id, String position, String description, String cpi_cutoff, String last_day_to_apply, String branches_allowed, String url, String imageURL, String internID) {
