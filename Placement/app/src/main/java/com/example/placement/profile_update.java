@@ -68,7 +68,8 @@ public class profile_update extends Activity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) { }
             });
-
+            
+            branchSelector = findViewById(R.id.studentBranchTextView);
             branchSelector.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

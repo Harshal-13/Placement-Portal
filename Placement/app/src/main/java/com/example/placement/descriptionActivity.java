@@ -78,7 +78,11 @@ public class descriptionActivity extends Activity {
                     branchList = intern.getBranches_allowed();
                     StringBuilder branchString = new StringBuilder();
                     for(int i=0;i<branchList.size();i++){
-                        branchString.append(branchList.get(i)).append("/n");
+                        if(i<branchList.size()-1){
+                            branchString.append(branchList.get(i)).append("\n");
+                        } else{
+                            branchString.append(branchList.get(i));
+                        }
                     }
                     branches.setText(branchString.toString());
                     company_name.setText(intern.getCompany_name());

@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import models.applicant_adapter;
 import models.application;
@@ -38,7 +39,7 @@ public class comp_applications extends AppCompatActivity {
         setContentView(R.layout.activity_comp_applications);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        reference =  FirebaseDatabase.getInstance().getReference("Applicants");
+        reference =  FirebaseDatabase.getInstance().getReference("Applicants").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         recyclerView = findViewById(R.id.myRecycler);
         recyclerView.setLayoutManager( new LinearLayoutManager(this));
         progressDialog = new ProgressDialog(this);
@@ -54,11 +55,8 @@ public class comp_applications extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         Iterable<DataSnapshot> snap = dataSnapshot1.getChildren();
                         for (DataSnapshot dataSnapshot2 : snap) {
-                            Iterable<DataSnapshot> snap2 = dataSnapshot2.getChildren();
-                            for (DataSnapshot dataSnapshot3 : snap2) {
-                                application p = dataSnapshot3.getValue(application.class);
-                                list.add(p);
-                            }
+                            application p = dataSnapshot2.getValue(application.class);
+                            list.add(p);
                         }
                         if (list.isEmpty()) {
                             Toast.makeText(comp_applications.this, "No Applications are available", Toast.LENGTH_SHORT).show();
@@ -74,7 +72,6 @@ public class comp_applications extends AppCompatActivity {
                     Toast.makeText(comp_applications.this, "No Applications are available", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(comp_applications.this, companyLandingPage.class));
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
