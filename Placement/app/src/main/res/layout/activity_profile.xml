@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="392dp"
+        android:layout_marginTop="360dp"
         android:text="Name"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -84,7 +84,7 @@
         android:id="@+id/profile_photo"
         android:layout_width="173dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="398dp"
+        android:layout_marginBottom="420dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="396dp"
+        android:layout_marginTop="350dp"
         android:text="Choose Photo"
         app:layout_constraintEnd_toStartOf="@+id/upload"
         app:layout_constraintHorizontal_bias="0.5"
@@ -148,5 +148,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/choose" />
+
+    <Button
+        android:id="@+id/buttonChangePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:onClick="change_password"
+        android:text="Change Password"
+        app:layout_constraintStart_toEndOf="@+id/buttonUpdateDetails"
+        app:layout_constraintTop_toBottomOf="@+id/student_email" />
+
+    <Button
+        android:id="@+id/buttonUpdateDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="22dp"
+        android:onClick="update_details"
+        android:text="Update Details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/student_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

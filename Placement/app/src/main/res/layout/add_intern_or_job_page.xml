@@ -105,21 +105,24 @@
 
         <TextView
             android:id="@+id/branchTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:textAlignment="center"
             android:layout_marginTop="8dp"
+            android:background="#11D8BD"
             android:text="@string/branches_allowed"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
-        <EditText
+        <TextView
             android:id="@+id/branch_edit_text"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:inputType="textAutoComplete"
+            android:textAlignment="center"
+            android:text="Branches Not Selected"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/branchTextView" />
 
@@ -132,7 +135,7 @@
             android:text="@string/cutoff_cpi"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/description_edit_text" />
 
         <EditText
             android:id="@+id/cpi_edit_text"
@@ -168,20 +171,21 @@
 
         <TextView
             android:id="@+id/pdfAddTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_marginTop="8dp"
+            android:textAlignment="center"
+            android:background="#11D8BD"
             android:text="@string/add_a_brochure"
-            android:textSize="25sp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateView" />
+            app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
 
         <TextView
             android:id="@+id/pdfTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:text="No File Selected"
             android:textStyle="italic"
             android:textAlignment="center"

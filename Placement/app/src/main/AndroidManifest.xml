@@ -32,6 +32,8 @@
         <activity android:name=".Companyprofile"/>
         <activity android:name=".comp_applications"/>
         <activity android:name=".stud_applications"/>
+        <activity android:name=".change_password"/>
+        <activity android:name=".profile_update"/>
     </application>
 
 </manifest>

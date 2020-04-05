@@ -100,8 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void back_to_main(View view) {
-        Intent gotoMainPage = new Intent(this, studentLandingPage.class);
-        startActivity(gotoMainPage);
+        startActivity(new Intent(this, studentLandingPage.class));
         finish();
     }
     private void chooseImage() {
@@ -128,7 +127,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
     private void uploadImage() {
-
         if(filePath != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -165,5 +163,15 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void change_password(View view) {
+        startActivity(new Intent(ProfileActivity.this, change_password.class).putExtra("Type","1"));
+        finish();
+    }
+
+    public void update_details(View view) {
+        startActivity(new Intent(ProfileActivity.this, profile_update.class).putExtra("Type","1"));
+        finish();
     }
 }

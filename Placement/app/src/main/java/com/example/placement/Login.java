@@ -166,8 +166,8 @@ public class Login extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(stud.isChecked()){
                     comp.setChecked(false);
-                    mOption.setVisibility(View.VISIBLE);
-                    googleLogin.setVisibility(View.VISIBLE);
+//                    mOption.setVisibility(View.VISIBLE);
+//                    googleLogin.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -186,17 +186,9 @@ public class Login extends Activity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleLogin = findViewById(R.id.google_login_button);
-        googleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (view.getId() == R.id.google_login_button) {
-                    googleLogIn();
-                }
-            }
-        });
     }
 
-    private void googleLogIn(){
+    public void googleLogIn(View view) {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

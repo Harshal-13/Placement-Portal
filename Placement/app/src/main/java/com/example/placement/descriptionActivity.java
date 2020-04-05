@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import models.application;
@@ -39,9 +40,10 @@ public class descriptionActivity extends Activity {
     private static final int PERMISSION_STORAGE_CODE = 13;
     TextView type, company_name, position, description, branches, cpi, date;
     ImageView company_icon;
+    ArrayList<String> branchList;
     Button downloadButton;
     String typeOpp, compID, typeID, pdfURL;
-    String c_name,c_email,s_name,s_email,offtype,offpos;
+    String c_name,c_email,s_name,s_email,offtype,offpos,cutoffCPI,studCPI,studBranch,deadlineDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +75,19 @@ public class descriptionActivity extends Activity {
                     c_name=intern.getCompany_name();
                     offpos=intern.getPosition();
                     pdfURL = intern.getUrl_of_brochure();
-
+                    branchList = intern.getBranches_allowed();
+                    StringBuilder branchString = new StringBuilder();
+                    for(int i=0;i<branchList.size();i++){
+                        branchString.append(branchList.get(i)).append("/n");
+                    }
+                    branches.setText(branchString.toString());
                     company_name.setText(intern.getCompany_name());
                     position.setText(intern.getPosition());
                     description.setText(intern.getDescription());
-                    branches.setText(intern.getBranches_allowed());
-                    cpi.setText(intern.getCpi_cutoff());
-                    date.setText(intern.getLast_day_to_apply());
+                    cutoffCPI = intern.getCpi_cutoff();
+                    cpi.setText(cutoffCPI);
+                    deadlineDate = intern.getLast_day_to_apply();
+                    date.setText(deadlineDate);
                     Glide.with(descriptionActivity.this).load(intern.getImageURL()).into(company_icon);
                 }
                 @Override
@@ -99,13 +107,19 @@ public class descriptionActivity extends Activity {
                     c_name=job.getCompany_name();
                     offpos=job.getPosition();
                     pdfURL = job.getUrl_of_brochure();
-
+                    branchList = job.getBranches_allowed();
+                    StringBuilder branchString = new StringBuilder();
+                    for(int i=0;i<branchList.size();i++){
+                        branchString.append(branchList.get(i)).append("/n");
+                    }
+                    branches.setText(branchString.toString());
                     company_name.setText(job.getCompany_name());
                     position.setText(job.getPosition());
                     description.setText(job.getDescription());
-                    branches.setText(job.getBranches_allowed());
-                    cpi.setText(job.getCpi_cutoff());
-                    date.setText(job.getLast_day_to_apply());
+                    cutoffCPI = job.getCpi_cutoff();
+                    cpi.setText(cutoffCPI);
+                    deadlineDate = job.getLast_day_to_apply();
+                    date.setText(deadlineDate);
                     Glide.with(descriptionActivity.this).load(job.getImageURL()).into(company_icon);
                 }
                 @Override
@@ -125,8 +139,10 @@ public class descriptionActivity extends Activity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 student student =Objects.requireNonNull(dataSnapshot.getValue(student.class));
-                s_email=student.getEmail();
-                s_name=student.getName();
+                s_email = student.getEmail();
+                s_name = student.getName();
+                studBranch = student.getBranch();
+                studCPI = student.getCpi();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
@@ -146,29 +162,34 @@ public class descriptionActivity extends Activity {
     }
 
     public  void apply(View view){
-        final application application = new application(s_name,s_email,offtype,c_name,c_email,offpos);
-        DatabaseReference refer = FirebaseDatabase.getInstance().getReference();
-        refer.child("Applicants").child(compID).child(typeID).child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(application).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    DatabaseReference ds = FirebaseDatabase.getInstance().getReference("Applications").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                    ds.child(typeID).setValue(application).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(descriptionActivity.this, "Congratulations, you have successfully applied for this offer", Toast.LENGTH_SHORT).show();
-                            } else{
-                                Toast.makeText(descriptionActivity.this, "Error while adding into user's applications", Toast.LENGTH_SHORT).show();
+        if(Double.parseDouble(studCPI)>=Double.parseDouble(cutoffCPI) && branchList.contains(studBranch)){
+            final application application = new application(s_name,s_email,offtype,c_name,c_email,offpos);
+            DatabaseReference refer = FirebaseDatabase.getInstance().getReference();
+            refer.child("Applicants").child(compID).child(typeID).child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(application).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        DatabaseReference ds = FirebaseDatabase.getInstance().getReference("Applications").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        ds.child(typeID).setValue(application).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(descriptionActivity.this, "Congratulations, you have successfully applied for this offer", Toast.LENGTH_SHORT).show();
+                                } else{
+                                    Toast.makeText(descriptionActivity.this, "Error while adding into user's applications", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    else{
+                        Toast.makeText(descriptionActivity.this, "Sorry,something went wrong", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-                    Toast.makeText(descriptionActivity.this, "Sorry,something went wrong", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
+        }
+        else {
+            Toast.makeText(descriptionActivity.this, "Sorry, You are Ineligible to Apply", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void back(View view) {

@@ -144,7 +144,7 @@ public class Companyprofile extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     img = uri.toString();
                                     databaseReference =  FirebaseDatabase.getInstance().getReference("Companies");
-                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("logo").setValue(img);
+                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("profile_pic").setValue(img);
                                 }
                             });
                         }
@@ -166,4 +166,15 @@ public class Companyprofile extends AppCompatActivity {
                     });
         }
     }
+
+    public void change_password(View view) {
+        startActivity(new Intent(Companyprofile.this, change_password.class).putExtra("Type","2"));
+        finish();
+    }
+
+    public void update_details(View view) {
+        startActivity(new Intent(Companyprofile.this, profile_update.class).putExtra("Type","2"));
+        finish();
+    }
+
 }

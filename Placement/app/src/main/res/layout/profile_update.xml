@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_page"
+    android:gravity="center_horizontal|top"
+    android:orientation="vertical"
+    android:paddingTop="50dp"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Update Profile"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/student_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <TextView
+            android:id="@+id/studentNameTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Name"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/student_name_edit_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/studentNameTextView_2"
+            app:layout_constraintTop_toBottomOf="@+id/studentNameTextView_2" />
+
+        <TextView
+            android:id="@+id/studentemailTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:text="@string/email"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/student_name_edit_text_2"
+            app:layout_constraintTop_toBottomOf="@+id/student_name_edit_text_2" />
+
+        <EditText
+            android:id="@+id/student_email_edit_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@+id/studentemailTextView_2"
+            app:layout_constraintTop_toBottomOf="@+id/studentemailTextView_2" />
+
+
+        <TextView
+            android:id="@+id/studentProfileTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:text="@string/cpi"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/student_email_edit_text_2"
+            app:layout_constraintTop_toBottomOf="@+id/student_email_edit_text_2" />
+
+        <EditText
+            android:id="@+id/student_cpi_edit_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@+id/studentProfileTextView_2"
+            app:layout_constraintTop_toBottomOf="@+id/studentProfileTextView_2" />
+
+        <TextView
+            android:id="@+id/studentBranchTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginTop="16dp"
+            android:background="#11D8BD"
+            android:text="@string/branch"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/student_cpi_edit_text_2"
+            app:layout_constraintTop_toBottomOf="@+id/student_cpi_edit_text_2" />
+
+        <TextView
+            android:id="@+id/student_branch_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@+id/studentBranchTextView"
+            app:layout_constraintTop_toBottomOf="@+id/studentBranchTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/company_layout"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <TextView
+            android:id="@+id/companyNameTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Company Name"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/company_name_edit_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/companyNameTextView_2"
+            app:layout_constraintTop_toBottomOf="@+id/companyNameTextView_2" />
+
+        <TextView
+            android:id="@+id/comapanyemailTextView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:text="@string/email"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/company_name_edit_text_2"
+            app:layout_constraintTop_toBottomOf="@+id/company_name_edit_text_2" />
+
+        <EditText
+            android:id="@+id/company_email_edit_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@+id/comapanyemailTextView_2"
+            app:layout_constraintTop_toBottomOf="@+id/comapanyemailTextView_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/ic_arrow_back_black"
+        android:onClick="back_to_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_black"
+        tools:srcCompat="@drawable/ic_arrow_back_black" />
+
+    <Button
+        android:id="@+id/profile_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="116dp"
+        android:text="UPDATE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

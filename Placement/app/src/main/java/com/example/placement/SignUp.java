@@ -1,10 +1,13 @@
 package com.example.placement;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -36,17 +39,17 @@ import models.company;
 import models.student;
 
 public class SignUp extends Activity {
-    EditText studentName, studentEmail ,studentPassword, studentBranch, studentCPI, companyName, companyEmail, companyPassword;
+    EditText studentName, studentEmail ,studentPassword, studentCPI, companyName, companyEmail, companyPassword;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
     DatabaseReference databaseReference;
     Button signUpButton;
     AppCompatRadioButton stud, comp;
-    TextView alreadyRegistered;
+    TextView alreadyRegistered, branchSelector,branchText;
     ConstraintLayout studLayout, compLayout;
     Uri FilePathUri;
     ProgressDialog progressDialog;
-    String url;
+    String url, branch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +62,8 @@ public class SignUp extends Activity {
         studentName = findViewById(R.id.fullname_edit_text);
         studentEmail = findViewById(R.id.username_edit_text);
         studentPassword = findViewById(R.id.password_edit_text);
-        studentBranch = findViewById(R.id.branch_edit_text);
+        branchSelector = findViewById(R.id.branchTextView);
+        branchText = findViewById(R.id.branch_edit_text);
         studentCPI = findViewById(R.id.cpi_edit_text);
         compLayout = findViewById(R.id.companyView);
         comp = findViewById(R.id.company_selector);
@@ -78,6 +82,30 @@ public class SignUp extends Activity {
             }
         });
 
+        branchSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] list = new String[]{"BIOTECHNOLOGY","CHEMICAL ENGINEERING","CHEMICAL SCIENCE AND TECHNOLOGY","CIVIL ENGINEERING","COMPUTER SCIENCE AND ENGINEERING","ELECTRONICS AND ELECTRICAL ENGINEERING","ELECTRONICS AND COMMUNICATION ENGINEERING","MATHEMATICS AND COMPUTING","MECHANICAL ENGINEERING","ENGINEERING PHYSICS"};
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(SignUp.this);
+                mBuilder.setTitle("Select a Branch").setIcon(R.drawable.ic_list)
+                        .setSingleChoiceItems(list, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                branch = list[which];
+                                branchText.setText(branch);
+                                dialog.dismiss();
+                            }
+                        }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,11 +113,13 @@ public class SignUp extends Activity {
                     final String name = studentName.getText().toString();
                     final String username = studentEmail.getText().toString();
                     final String pwd = studentPassword.getText().toString();
-                    final String branch = studentBranch.getText().toString();
                     final String cpi = studentCPI.getText().toString();
 
-                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty() || branch.isEmpty() || cpi.isEmpty()){
+                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty() || (branch==null) || cpi.isEmpty()){
                         Toast.makeText(SignUp.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Double.parseDouble(cpi)>10){
+                        Toast.makeText(SignUp.this,"CPI can't be more than 10",Toast.LENGTH_SHORT).show();
                     }
                     else if(pwd.length()<6){
                         Toast.makeText(SignUp.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();

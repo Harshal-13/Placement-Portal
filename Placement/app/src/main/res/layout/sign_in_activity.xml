@@ -127,21 +127,24 @@
 
         <TextView
             android:id="@+id/branchTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_marginTop="8dp"
-            android:text="@string/branch"
+            android:background="#11D8BD"
+            android:text="Select Branch"
+            android:textAlignment="center"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
 
-        <EditText
+        <TextView
             android:id="@+id/branch_edit_text"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:inputType="textAutoComplete"
+            android:text="Branch Not Selected"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/branchTextView" />
 
@@ -154,7 +157,7 @@
             android:text="@string/cpi"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
 
         <EditText
             android:id="@+id/cpi_edit_text"
@@ -175,7 +178,7 @@
             android:text="Profile Pic :"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
 
         <Button
             android:id="@+id/browse1"
@@ -185,7 +188,7 @@
             android:text="Browse Image"
             android:onClick="browseImage"
             app:layout_constraintStart_toEndOf="@+id/StudentPicTextView"
-            app:layout_constraintTop_toBottomOf="@+id/cpi_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/branch_edit_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

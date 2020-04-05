@@ -2,8 +2,10 @@ package com.example.placement;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -38,15 +40,18 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import models.intern;
 import models.job;
 
 public class add_intern_or_job_activity extends Activity {
-    EditText opPosition, opDescription, opCpi, opBranchesAllowed;
-    TextView dateView, pdfSelect, pdfPath;
+    EditText opPosition, opDescription, opCpi;
+    TextView dateView, pdfSelect, pdfPath, opBranchesAllowed, branchSelector;
     Uri pdfUri;
     String date, url, internID, jobID;
     DatePickerDialog.OnDateSetListener onDateSetListener;
@@ -56,6 +61,7 @@ public class add_intern_or_job_activity extends Activity {
     Button registerButton;
     AppCompatRadioButton internButton, jobButton;
     ProgressDialog progressDialog;
+    ArrayList<String> branch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class add_intern_or_job_activity extends Activity {
         opDescription = findViewById(R.id.description_edit_text);
         opCpi = findViewById(R.id.cpi_edit_text);
         dateView = findViewById(R.id.dateView);
+        branchSelector = findViewById(R.id.branchTextView);
         opBranchesAllowed = findViewById(R.id.branch_edit_text);
         registerButton = findViewById(R.id.register_button);
         internButton = findViewById(R.id.intern_selector);
@@ -112,6 +119,46 @@ public class add_intern_or_job_activity extends Activity {
             }
         };
 
+        branchSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] list = new String[]{"BIOTECHNOLOGY","CHEMICAL ENGINEERING","CHEMICAL SCIENCE AND TECHNOLOGY","CIVIL ENGINEERING","COMPUTER SCIENCE AND ENGINEERING","ELECTRONICS AND ELECTRICAL ENGINEERING","ELECTRONICS AND COMMUNICATION ENGINEERING","MATHEMATICS AND COMPUTING","MECHANICAL ENGINEERING","ENGINEERING PHYSICS"};
+                final boolean[] listStatus = new boolean[]{false,false,false,false,false,false,false,false,false,false};
+                final List<String> courseList = Arrays.asList(list);
+                branch = new ArrayList<>();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(add_intern_or_job_activity.this);
+                mBuilder.setTitle("Select Branches").setIcon(R.drawable.ic_list)
+                        .setMultiChoiceItems(list, listStatus, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                               listStatus[which] = isChecked;
+                            }
+                        }).setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i=0;i<list.length;i++){
+                            if(listStatus[i]){
+                                branch.add(courseList.get(i));
+                            }
+                        }
+                        if(branch.size()>0){
+                            String message = "Branches Selected : " + branch.size();
+                            opBranchesAllowed.setText(message);
+                        } else {
+                            opBranchesAllowed.setText("Branches Not Selected");
+                        }
+                    }
+                }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,15 +166,17 @@ public class add_intern_or_job_activity extends Activity {
                 final String companyPic = getIntent().getStringExtra("Profile_Pic");
                 final String position = opPosition.getText().toString();
                 final String description = opDescription.getText().toString();
-                final String branch = opBranchesAllowed.getText().toString();
                 final String cpi = opCpi.getText().toString();
 
-                if(position.isEmpty() || description.isEmpty() || date.isEmpty() || branch.isEmpty() || cpi.isEmpty()){
+                if(position.isEmpty() || description.isEmpty() || date.isEmpty() || branch==null || cpi.isEmpty()){
                     Toast.makeText(add_intern_or_job_activity.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
                 }
-//                    else if(Integer.valueOf(cpi)>10){
-//                        Toast.makeText(add_intern_or_job_activity.this, "CPI can't be more than 10 !",Toast.LENGTH_SHORT).show();
-//                    }
+                else if(branch.size()==0){
+                    Toast.makeText(add_intern_or_job_activity.this,"Select Allowed Branches",Toast.LENGTH_SHORT).show();
+                }
+                else if(Double.parseDouble(cpi)>10){
+                    Toast.makeText(add_intern_or_job_activity.this, "CPI can't be more than 10 !",Toast.LENGTH_SHORT).show();
+                }
                 else if(pdfUri==null){
                     Toast.makeText(add_intern_or_job_activity.this,"Select a File",Toast.LENGTH_SHORT).show();
                 }

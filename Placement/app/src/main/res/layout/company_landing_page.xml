@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:onClick="goto_applications"
-        android:text="@string/view_applications"
+        android:text="View Applicants"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
