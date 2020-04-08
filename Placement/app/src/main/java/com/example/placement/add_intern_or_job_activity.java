@@ -62,6 +62,7 @@ public class add_intern_or_job_activity extends Activity {
     AppCompatRadioButton internButton, jobButton;
     ProgressDialog progressDialog;
     ArrayList<String> branch;
+    //lol
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
