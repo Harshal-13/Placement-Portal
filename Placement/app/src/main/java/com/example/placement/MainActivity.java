@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
+                if (mFirebaseUser != null && mFirebaseUser.isEmailVerified()) {
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

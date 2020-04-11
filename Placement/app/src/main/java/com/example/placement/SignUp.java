@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -77,7 +76,7 @@ public class SignUp extends Activity {
         alreadyRegistered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUp.this,Login.class));
+                startActivity(new Intent(SignUp.this, Login.class));
                 finish();
             }
         });
@@ -85,7 +84,7 @@ public class SignUp extends Activity {
         branchSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] list = new String[]{"BIOTECHNOLOGY","CHEMICAL ENGINEERING","CHEMICAL SCIENCE AND TECHNOLOGY","CIVIL ENGINEERING","COMPUTER SCIENCE AND ENGINEERING","ELECTRONICS AND ELECTRICAL ENGINEERING","ELECTRONICS AND COMMUNICATION ENGINEERING","MATHEMATICS AND COMPUTING","MECHANICAL ENGINEERING","ENGINEERING PHYSICS"};
+                final String[] list = new String[]{"BIOTECHNOLOGY", "CHEMICAL ENGINEERING", "CHEMICAL SCIENCE AND TECHNOLOGY", "CIVIL ENGINEERING", "COMPUTER SCIENCE AND ENGINEERING", "ELECTRONICS AND ELECTRICAL ENGINEERING", "ELECTRONICS AND COMMUNICATION ENGINEERING", "MATHEMATICS AND COMPUTING", "MECHANICAL ENGINEERING", "ENGINEERING PHYSICS"};
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(SignUp.this);
                 mBuilder.setTitle("Select a Branch").setIcon(R.drawable.ic_list)
                         .setSingleChoiceItems(list, -1, new DialogInterface.OnClickListener() {
@@ -109,141 +108,154 @@ public class SignUp extends Activity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(stud.isChecked()){
+                if (stud.isChecked()) {
                     final String name = studentName.getText().toString();
                     final String username = studentEmail.getText().toString();
                     final String pwd = studentPassword.getText().toString();
                     final String cpi = studentCPI.getText().toString();
 
-                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty() || (branch==null) || cpi.isEmpty()){
-                        Toast.makeText(SignUp.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
-                    }
-                    else if(Double.parseDouble(cpi)>10){
-                        Toast.makeText(SignUp.this,"CPI can't be more than 10",Toast.LENGTH_SHORT).show();
-                    }
-                    else if(pwd.length()<6){
+                    if (name.isEmpty() || username.isEmpty() || pwd.isEmpty() || (branch == null) || cpi.isEmpty()) {
+                        Toast.makeText(SignUp.this, "Fields are Empty!", Toast.LENGTH_SHORT).show();
+                    } else if (Double.parseDouble(cpi) > 10) {
+                        Toast.makeText(SignUp.this, "CPI can't be more than 10", Toast.LENGTH_SHORT).show();
+                    } else if (pwd.length() < 6) {
                         Toast.makeText(SignUp.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(FilePathUri==null){
-                        Toast.makeText(SignUp.this,"Select a File",Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        mFirebaseAuth.createUserWithEmailAndPassword(username,pwd).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+                    } else if (FilePathUri == null) {
+                        Toast.makeText(SignUp.this, "Select a File", Toast.LENGTH_SHORT).show();
+                    } else {
+                        mFirebaseAuth.createUserWithEmailAndPassword(username, pwd).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(! task.isSuccessful()){
-                                    Toast.makeText(SignUp.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    progressDialog.setTitle("Profile Pic is Uploading...");
-                                    progressDialog.show();
-                                    storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this,"Upload Successful",Toast.LENGTH_SHORT).show();
-
-                                            storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                public void onSuccess(Uri uri) {
-                                                    url = uri.toString();
-                                                    student student = new student(name, username, branch, cpi, url);
-                                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if(task.isSuccessful()){
-                                                                Toast.makeText(SignUp.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                                startActivity(new Intent(SignUp.this,studentLandingPage.class));
-                                                                finish();
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(SignUp.this, "Registered successfully.Please check your email for verification", Toast.LENGTH_LONG).show();
+                                                        progressDialog.setTitle("Profile Pic is Uploading...");
+                                                        progressDialog.show();
+                                                        storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                progressDialog.dismiss();
+                                                                Toast.makeText(SignUp.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+
+                                                                storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                    @Override
+                                                                    public void onSuccess(Uri uri) {
+                                                                        url = uri.toString();
+                                                                        student student = new student(name, username, branch, cpi, url);
+
+                                                                        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    Toast.makeText(SignUp.this, "SignUp Successful !! verify email and login with your credentials", Toast.LENGTH_SHORT).show();
+                                                                                    //startActivity(new Intent(SignUp.this, studentLandingPage.class));
+                                                                                    finish();
+                                                                                } else {
+                                                                                    Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
                                                             }
-                                                            else{
-                                                                Toast.makeText(SignUp.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(SignUp.this, "Upload Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
                                                             }
-                                                        }
-                                                    });
+                                                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                                                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                                                progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    }
                                                 }
                                             });
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(SignUp.this,"Upload Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                                        }
-                                    });
+
                                 }
                             }
                         });
                     }
-                }
-                else if(comp.isChecked()){
+                } else if (comp.isChecked()) {
                     final String name = companyName.getText().toString();
                     final String username = companyEmail.getText().toString();
                     String pwd = companyPassword.getText().toString();
 
-                    if(name.isEmpty() || username.isEmpty() || pwd.isEmpty()){
-                        Toast.makeText(SignUp.this,"Fields are Empty!",Toast.LENGTH_SHORT).show();
-                    }
-                    else if(pwd.length()<6){
+                    if (name.isEmpty() || username.isEmpty() || pwd.isEmpty()) {
+                        Toast.makeText(SignUp.this, "Fields are Empty!", Toast.LENGTH_SHORT).show();
+                    } else if (pwd.length() < 6) {
                         Toast.makeText(SignUp.this, "Min Length of Password is 6 !", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(FilePathUri==null){
-                        Toast.makeText(SignUp.this,"Select a File",Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        mFirebaseAuth.createUserWithEmailAndPassword(username,pwd).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+                    } else if (FilePathUri == null) {
+                        Toast.makeText(SignUp.this, "Select a File", Toast.LENGTH_SHORT).show();
+                    } else {
+                        mFirebaseAuth.createUserWithEmailAndPassword(username, pwd).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(! task.isSuccessful()){
-                                    Toast.makeText(SignUp.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    progressDialog.setTitle("Profile is Uploading...");
-                                    progressDialog.show();
-                                    storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(SignUp.this,"Upload Successful",Toast.LENGTH_SHORT).show();
-
-                                            storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                public void onSuccess(Uri uri) {
-                                                    url = uri.toString();
-                                                    company company = new company(name, username, url);
-                                                    databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(company).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if(task.isSuccessful()){
-                                                                Toast.makeText(SignUp.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                                startActivity(new Intent(SignUp.this,companyLandingPage.class));
-                                                                finish();
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(SignUp.this, "Registered successfully.Please check your email for verification", Toast.LENGTH_LONG).show();
+                                                        progressDialog.setTitle("Profile is Uploading...");
+                                                        progressDialog.show();
+                                                        storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                progressDialog.dismiss();
+                                                                Toast.makeText(SignUp.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+
+                                                                storageReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                    @Override
+                                                                    public void onSuccess(Uri uri) {
+                                                                        url = uri.toString();
+                                                                        company company = new company(name, username, url);
+                                                                        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(company).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    Toast.makeText(SignUp.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
+                                                                                    startActivity(new Intent(SignUp.this, companyLandingPage.class));
+                                                                                    finish();
+                                                                                } else {
+                                                                                    Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
                                                             }
-                                                            else{
-                                                                Toast.makeText(SignUp.this,"SignUp Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(SignUp.this, "Upload Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
                                                             }
-                                                        }
-                                                    });
+                                                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                                                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                                                progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    }
                                                 }
                                             });
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(SignUp.this,"Upload Unsuccessful, Please try Again",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                                        }
-                                    });
+
                                 }
                             }
                         });
@@ -252,10 +264,11 @@ public class SignUp extends Activity {
             }
         });
 
+
         stud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(stud.isChecked()){
+                if (stud.isChecked()) {
                     comp.setChecked(false);
                     studLayout.setVisibility(View.VISIBLE);
                     compLayout.setVisibility(View.GONE);
@@ -268,7 +281,7 @@ public class SignUp extends Activity {
         comp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(comp.isChecked()){
+                if (comp.isChecked()) {
                     stud.setChecked(false);
                     compLayout.setVisibility(View.VISIBLE);
                     studLayout.setVisibility(View.GONE);
