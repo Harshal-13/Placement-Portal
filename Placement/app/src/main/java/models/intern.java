@@ -77,4 +77,6 @@ public class intern implements Serializable {
     public String getInternID() { return internID; }
 
     public void setInternID(String internID) { this.internID = internID; }
+
+
 }

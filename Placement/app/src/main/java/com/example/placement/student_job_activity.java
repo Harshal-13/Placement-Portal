@@ -21,8 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import models.intern;
-import models.internAdapter;
 import models.job;
 import models.jobAdapter;
 

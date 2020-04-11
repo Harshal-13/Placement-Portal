@@ -110,6 +110,7 @@ public class Login extends Activity {
                             }
                             else{
                                 if(stud.isChecked()){
+                                    if(mFirebaseAuth.getCurrentUser().isEmailVerified()){
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
                                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -125,8 +126,12 @@ public class Login extends Activity {
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) { }
-                                    });
+                                    });}
+                                    else{
+                                        Toast.makeText(Login.this, "Verify your e-mail address", Toast.LENGTH_LONG).show();
+                                    }
                                 } else if(comp.isChecked()){
+                                    if(mFirebaseAuth.getCurrentUser().isEmailVerified()){
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
                                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -142,7 +147,10 @@ public class Login extends Activity {
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) { }
-                                    });
+                                    });}
+                                    else{
+                                        Toast.makeText(Login.this, "Verify your e-mail address", Toast.LENGTH_LONG).show();
+                                    }
                                 }else{
                                     Toast.makeText(Login.this, "Please Check in your Type !", Toast.LENGTH_SHORT).show();
                                     FirebaseAuth.getInstance().signOut();
