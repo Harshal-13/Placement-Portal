@@ -110,7 +110,7 @@ public class Login extends Activity {
                             }
                             else{
                                 if(stud.isChecked()){
-                                    if(mFirebaseAuth.getCurrentUser().isEmailVerified()){
+                                    if(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).isEmailVerified()){
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Students");
                                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -131,7 +131,7 @@ public class Login extends Activity {
                                         Toast.makeText(Login.this, "Verify your e-mail address", Toast.LENGTH_LONG).show();
                                     }
                                 } else if(comp.isChecked()){
-                                    if(mFirebaseAuth.getCurrentUser().isEmailVerified()){
+                                    if(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).isEmailVerified()){
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Companies");
                                     ref.child(Objects.requireNonNull(mFirebaseAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -206,6 +206,7 @@ public class Login extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            assert result != null;
             if (result.isSuccess()){
                 Toast.makeText(Login.this, "Logged in!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(Login.this, studentLandingPage.class));

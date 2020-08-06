@@ -129,7 +129,7 @@ public class SignUp extends Activity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                    Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -154,7 +154,7 @@ public class SignUp extends Activity {
                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                 if (task.isSuccessful()) {
                                                                                     Toast.makeText(SignUp.this, "SignUp Successful !! verify email and login with your credentials", Toast.LENGTH_SHORT).show();
-                                                                                    //startActivity(new Intent(SignUp.this, studentLandingPage.class));
+                                                                                    startActivity(new Intent(SignUp.this, Login.class));
                                                                                     finish();
                                                                                 } else {
                                                                                     Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
@@ -177,7 +177,7 @@ public class SignUp extends Activity {
                                                             }
                                                         });
                                                     } else {
-                                                        Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(SignUp.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }
                                             });
@@ -204,7 +204,7 @@ public class SignUp extends Activity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                    Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -228,7 +228,7 @@ public class SignUp extends Activity {
                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                 if (task.isSuccessful()) {
                                                                                     Toast.makeText(SignUp.this, "SignUp Successful !!", Toast.LENGTH_SHORT).show();
-                                                                                    startActivity(new Intent(SignUp.this, companyLandingPage.class));
+                                                                                    startActivity(new Intent(SignUp.this, Login.class));
                                                                                     finish();
                                                                                 } else {
                                                                                     Toast.makeText(SignUp.this, "SignUp Unsuccessful, Please try Again", Toast.LENGTH_SHORT).show();
@@ -251,7 +251,7 @@ public class SignUp extends Activity {
                                                             }
                                                         });
                                                     } else {
-                                                        Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(SignUp.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }
                                             });
